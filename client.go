@@ -103,12 +103,11 @@ func (c *Client) Job(id string) (Job, error) {
 }
 
 // Execute ...
-func (c *Client) Execute(function, command, target, targetType string) (string, error) {
-	er := ExecutionResponse{}
-
-	req := fmt.Sprintf(`{"fun": "%s", "arg": "%s", "tgt": "%s", "expr_form": "%s"}`, function, command, target, targetType)
-
-	resp, err := c.Connector.Post("/minions", []byte(req))
+func (c *Client) Execute(function, command, kwargs, target, targetType string) (string, error) {
+	req := fmt.Sprintf(`{"fun": "%s", "arg": "%s", "kwarg": "%s", "tgt": "%s", "expr_form": "%s", "client": "local"}`,
+		function, command, kwargs, target, targetType)
+	fmt.Println(req)
+	resp, err := c.Connector.Post("", []byte(req))
 	if err != nil {
 		return "", err
 	}
@@ -118,7 +117,5 @@ func (c *Client) Execute(function, command, target, targetType string) (string, 
 		return "", err
 	}
 
-	err = json.Unmarshal(*data, &er)
-
-	return er.Job[0].ID, err
+	return string(*data), nil
 }

@@ -107,9 +107,9 @@ func (c *Connector) Post(uri string, data []byte) (*http.Response, error) {
 		return nil, err
 	}
 
-	if resp.StatusCode != 202 {
-		return nil, errors.New("failed to make request")
-	}
+	//if resp.StatusCode != 202 {
+	//	return nil, errors.New("failed to make request")
+	//}
 
 	return resp, nil
 }
